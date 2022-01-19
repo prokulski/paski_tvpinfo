@@ -27,7 +27,7 @@ def preprocess_img(im, settings):
 
 
 def ocr_image(image):
-    settings = {"contrast": 1.25, "sharpness": 2, "show": True}
+    settings = {"contrast": 1.25, "sharpness": 2, "show": False}
 
     # preprocess
     im_to_ocr = preprocess_img(image, settings)
