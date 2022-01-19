@@ -6,7 +6,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 
 
-def open_transmition(tvpstream_url: str, headless: bool=True) -> webdriver:
+def open_transmition(tvpstream_url: str, headless: bool = True) -> webdriver:
     # wersja headless
     chrome_options = Options()
     if headless:
@@ -31,7 +31,9 @@ def open_transmition(tvpstream_url: str, headless: bool=True) -> webdriver:
         By.XPATH,
         "//div[@class='tp2thm tp2thm-icon tp2thm-icon-play tp2thm-icon-play-custom']",
     )
-    element.click()
+    if element:
+        element.click()
+
     time.sleep(1)
 
     return driver

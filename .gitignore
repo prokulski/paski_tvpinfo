@@ -3,3 +3,5 @@ paski.log
 testy.py
 zrzuty_ekranu/**
 config.yaml
+**/__pycache__/**
+
