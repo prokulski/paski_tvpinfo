@@ -90,7 +90,7 @@ def main():
             driver.quit()
             logger.info("[INFO] Przeglądarka zamknięta")
             time.sleep(60)
-            driver = open_transmition(args.headless)
+            driver = open_transmition(config["TVPStreamUrl"], args.headless)
 
 
 if __name__ == "__main__":
