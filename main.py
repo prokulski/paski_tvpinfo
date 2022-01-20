@@ -42,45 +42,52 @@ def main():
 
     driver = open_transmition(config["TVPStreamUrl"], args.headless)
 
-    last_pasek_ocr = ""
+    prev_ticker_text = ""
     while True:
-        filename = make_filename(config["StillsFolder"])
-        still = driver.get_screenshot_as_png()
-        image = still_to_pil(
-            still,
+        browser_image = driver.get_screenshot_as_png()
+        frame_image = still_to_pil(
+            browser_image,
             (
-                config["Ekran"]["left"],
-                config["Ekran"]["top"],
-                config["Ekran"]["right"],
-                config["Ekran"]["bottom"],
+                config["frame"]["left"],
+                config["frame"]["top"],
+                config["frame"]["right"],
+                config["frame"]["bottom"],
             ),
         )
-        pasek = still_to_pil(
-            still,
+        ticker_image = still_to_pil(
+            browser_image,
             (
-                config["Pasek"]["left"],
-                config["Pasek"]["top"],
-                config["Pasek"]["right"],
-                config["Pasek"]["bottom"],
+                config["ticker"]["left"],
+                config["ticker"]["top"],
+                config["ticker"]["right"],
+                config["ticker"]["bottom"],
             ),
         )
-        pasek_ocr = ocr_image(pasek)
 
-        fz_ratio = fuzz.ratio(pasek_ocr, last_pasek_ocr)
-        fz_partial_ratio = fuzz.partial_ratio(pasek_ocr, last_pasek_ocr)
+        ticker_text = ocr_image(ticker_image)
 
-        # print(f"{fz_ratio} | {fz_partial_ratio} | {pasek_ocr}  ", end="\r")
+        fz_ratio = fuzz.ratio(ticker_text, prev_ticker_text)
+        fz_partial_ratio = fuzz.partial_ratio(ticker_text, prev_ticker_text)
 
-        if (len(pasek_ocr) > 10) and ((fz_ratio < 70) or (fz_partial_ratio < 70)):
+        if (len(ticker_text) > 10) and ((fz_ratio < 70) or (fz_partial_ratio < 70)):
+            prev_ticker_text = ticker_text
 
-            logger.info(pasek_ocr)
+            logger.info(ticker_text)
             print(
-                f"{time.strftime('%Y-%m-%d %H:%M:%S')}: {fz_ratio=} | {fz_partial_ratio=}\n\t{pasek_ocr}"
+                f"{time.strftime('%Y-%m-%d %H:%M:%S')}: {fz_ratio=} | {fz_partial_ratio=}\n\t{ticker_text}"
             )
 
-            save_still(still, filename, config)  # zapisane całego zrzutu z ramkami
-            # image.save(filename)  # zapisanie zrzutu ekranu
-            last_pasek_ocr = pasek_ocr
+            # zapisanie zrzutu ekranu całej przeglądarki
+            filename = make_filename(config["image_dir"], kind="frame")
+            save_still(browser_image, filename, config)
+            
+            # zapisanie zrzutu ekranu tv
+            filename = make_filename(config["image_dir"], kind="image")
+            frame_image.save(filename)
+            
+            # zapisanie paska
+            filename = make_filename(config["image_dir"], kind="pasek")
+            ticker_image.save(filename)
 
         time.sleep(5)
 

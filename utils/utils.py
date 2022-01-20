@@ -4,12 +4,14 @@ import time
 import yaml
 
 
-def make_filename(stills_folder: str) -> str:
-    year = time.strftime("%Y")
-    month = time.strftime("%m")
-    day = time.strftime("%d")
-    hour = time.strftime("%H")
-    fn = f"{stills_folder}/{year}/{month}/{day}/{hour}/{time.strftime('%Y%m%d_%H%M%S')}.png"
+def make_filename(image_folder: str, kind: str) -> str:
+    y, m, d, h = (
+        time.strftime("%Y"),
+        time.strftime("%m"),
+        time.strftime("%d"),
+        time.strftime("%H"),
+    )
+    fn = f"{image_folder}/{y}/{m}/{d}/{h}/{kind}/{time.strftime('%Y%m%d_%H%M%S')}.png"
 
     folder, _ = os.path.split(fn)
     try:

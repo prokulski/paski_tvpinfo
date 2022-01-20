@@ -1,14 +1,14 @@
-StillsFolder: "still_frames"
+image_dir: "images"
 TVPStreamUrl: "http://tvpstream.tvp.pl/"
 
-Ekran:
-  left: 110
-  top: 120
-  right: 1160
-  bottom: 710
+frame:
+  left: 175
+  top: 70
+  right: 1375
+  bottom: 743
 
-Pasek:
-  left: 312
-  top: 563
-  right: 1150
-  bottom: 647
+ticker:
+  left: 400
+  top: 575
+  right: 1375
+  bottom: 675

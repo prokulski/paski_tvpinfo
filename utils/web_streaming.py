@@ -1,5 +1,4 @@
 import time
-from xmlrpc.client import boolean
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -8,7 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 
 
-def click_element(driver, xpath):
+def click_element(driver: webdriver, xpath: str) -> None:
     """Kliknięcie w element - najpierw na niego czekamy, potem klikamy"""
     button = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.XPATH, xpath))
@@ -29,7 +28,7 @@ def open_transmition(tvpstream_url: str, headless: bool = True) -> webdriver:
     time.sleep(2)
 
     # skalowanie okna przeglądarki do konkretnej wielkości + zmiana croppingu
-    driver.set_window_size(1280, 900)
+    driver.set_window_size(1600, 1000)
 
     # zamknięcie okna z popupem
     click_element(driver, "//div[@class='tvp-covl__ab']")
@@ -39,6 +38,9 @@ def open_transmition(tvpstream_url: str, headless: bool = True) -> webdriver:
         driver,
         "//div[@class='tp2thm tp2thm-icon tp2thm-icon-play tp2thm-icon-play-custom']",
     )
+
+    # przewinięcie okna w dół o 20 pikseli
+    driver.execute_script("window.scrollBy(0, 150);")
 
     time.sleep(1)
 
