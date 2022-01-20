@@ -4,6 +4,16 @@ from xmlrpc.client import boolean
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
+
+def click_element(driver, xpath):
+    """Kliknięcie w element - najpierw na niego czekamy, potem klikamy"""
+    button = WebDriverWait(driver, 10).until(
+        EC.element_to_be_clickable((By.XPATH, xpath))
+    )
+    button.click()
 
 
 def open_transmition(tvpstream_url: str, headless: bool = True) -> webdriver:
@@ -22,17 +32,13 @@ def open_transmition(tvpstream_url: str, headless: bool = True) -> webdriver:
     driver.set_window_size(1280, 900)
 
     # zamknięcie okna z popupem
-    element = driver.find_element(By.XPATH, "//div[@class='tvp-covl__ab']")
-    if element:
-        element.click()
+    click_element(driver, "//div[@class='tvp-covl__ab']")
 
     # kliknięcie play
-    element = driver.find_element(
-        By.XPATH,
+    click_element(
+        driver,
         "//div[@class='tp2thm tp2thm-icon tp2thm-icon-play tp2thm-icon-play-custom']",
     )
-    if element:
-        element.click()
 
     time.sleep(1)
 
